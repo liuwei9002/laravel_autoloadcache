@@ -98,9 +98,9 @@ class AutoloadHandler
         \Log::info('缓存不存在，等待缓存数据');
         $micr = microtime(true);
         $i = 0;
-        while (microtime(true) - $micr <= ($waitTime ?: Config::get('common.waitTime'))) {
+        while (microtime(true) - $micr <= ($waitTime ?: \Config::get('alc.common.waitTime'))) {
             // 等待一段时间
-            usleep(Config::get('common.sleepTime') * 1000000);
+            usleep(\Config::get('alc.common.sleepTime') * 1000000);
             \Log::info('一次等待缓存数据' . $i);$i++;
             // 判断是否存在key
             if ($this->existKey($key)) {
@@ -121,9 +121,9 @@ class AutoloadHandler
      */
     public function needToLoad($key)
     {
-//        CacheLock::unlock($key);
+        CacheLock::unlock($key);
         \Log::info('缓存还有' . self::$driverObj->ttl($key) . 's过期' . $key);
-        if (self::$driverObj->ttl($key) <= Config::get('common.ttl_time')
+        if (self::$driverObj->ttl($key) <= \Config::get('alc.common.ttl_time')
             && $this->getLock($key)
         ) {
             return true;

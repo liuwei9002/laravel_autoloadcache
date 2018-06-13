@@ -21,7 +21,7 @@ class SwooleHandler
     {
         $cli = new \swoole_client(SWOOLE_SOCK_UDP);
 
-        if (!$cli->connect(Config::get('swoole.client_ip'), Config::get('swoole.client_port'), 1)) {
+        if (!$cli->connect(\Config::get('alc.swoole.client_ip'), \Config::get('alc.swoole.client_port'), 1)) {
             throw new \Exception('swoole client to create failure');
         }
 
@@ -51,7 +51,7 @@ class SwooleHandler
      */
     public static function createServer()
     {
-        return new \swoole_server(Config::get('swoole.server_ip'), Config::get('swoole.server_port'), SWOOLE_PROCESS, SWOOLE_SOCK_UDP);
+        return new \swoole_server(\Config::get('alc.swoole.server_ip'), \Config::get('alc.swoole.server_port'), SWOOLE_PROCESS, SWOOLE_SOCK_UDP);
     }
 
     /**

@@ -32,7 +32,7 @@ class AutoloadCacheServer {
             self::$serv, [$this, 'onPacket'],
             [$this, 'onTask'],
             [$this, 'onFinish'],
-            Config::get('swoole.task_worker_num', 4)
+            \Config::get('alc.swoole.task_worker_num', 4)
         );
     }
 

@@ -65,11 +65,11 @@ class CacheManager
      */
     private function getDefaultDriver()
     {
-        return Config::get('cache.default');
+        return \Config::get('cache.default');
     }
 
     private function getStoresConfig($name)
     {
-        return Config::get("cache.stores.{$name}");
+        return \Config::get("cache.stores.{$name}");
     }
 }

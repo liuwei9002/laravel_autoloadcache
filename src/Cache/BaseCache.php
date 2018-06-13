@@ -173,9 +173,9 @@ class BaseCache
      */
     public static function setCacheConfig($paramsNumber, $params)
     {
-        self::$expirTime = Config::get('common.expirTime', 60);
-        self::$waitTime = Config::get('common.waitTime', 0.1);
-        self::$openAutoload = Config::get('common.openAutoload', true);
+        self::$expirTime = \Config::get('alc.common.expirTime', 60);
+        self::$waitTime = \Config::get('alc.common.waitTime', 0.1);
+        self::$openAutoload = \Config::get('alc.common.openAutoload', true);
 
         // 设置缓存过期时间
         if (isset($params[$paramsNumber])) {

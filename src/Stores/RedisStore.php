@@ -16,11 +16,12 @@ class RedisStore extends BaseStore implements Store
 
     public function __construct($config)
     {
+        $connection = $this->getConnection(array_get($config, 'connection', 'default'));
         if (self::$redis == null) {
-            if (isset($config['cluster']) && $config['cluster']) { // 集群
-                $this->createClusterObject($config['connections']);
+            if (array_get($connection, 'cluster')) { // 集群
+                $this->createClusterObject($connection);
             } else {
-                $this->createSimpleObejct(current($config['connections']));
+                $this->createSimpleObejct($connection);
             }
         }
     }
@@ -63,19 +64,40 @@ class RedisStore extends BaseStore implements Store
         self::$redis->incr($key);
     }
 
-    private function createClusterObject($connects)
+    /**
+     * create cluster redis object
+     *
+     * @param $connects
+     */
+    private function createClusterObject($connections)
     {
-         $connectHost = [];
-         foreach ($connects as $connect) {
-             $connectHost[] = $connect['host'] . ":" . $connect['port'];
+         $connectionHost = [];
+         foreach ($connections as $connection) {
+             $connectionHost[] = array_get($connection, 'host', '') . ":" . array_get($connection, 'host', '');
          }
-        self::$redis = new \RedisCluster(null, $connectHost);
+        self::$redis = new \RedisCluster(null, $connectionHost);
     }
 
-    private function createSimpleObejct($connect)
+    /**
+     * create simple redis object
+     *
+     * @param $connect
+     */
+    private function createSimpleObejct($connection)
     {
         self::$redis = new \Redis();
-        self::$redis->connect($connect['host'], $connect['port']);
+        self::$redis->connect(array_get($connection, 'host', ''), array_get($connection, 'port', ''));
+    }
+
+    /**
+     * get connection info
+     *
+     * @param $connectionType
+     * @return mixed
+     */
+    private function getConnection($connectionType)
+    {
+        return \Config::get("database.redis.$connectionType");
     }
 
 }

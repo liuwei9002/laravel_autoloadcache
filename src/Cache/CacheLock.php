@@ -43,7 +43,7 @@ class CacheLock
      */
     public static function getDefaultLockType()
     {
-        return Config::get('common.lock_type_default');
+        return \Config::get('alc.common.lock_type_default');
     }
 
     /**
